@@ -45,6 +45,7 @@ Help make this guide even better! Feel free to:
 ### Collaboration & Advanced Topics
 - [🔄 Update & Publish](#-update--publish) - Sync with remote repositories
 - [🔀 Merge & Rebase](#-merge--rebase) - Integrate changes from different branches
+- [🍒 Cherry Pick](#-cherry-pick) - Apply specific commits from other branches
 - [↩️ Undo](#️-undo) - Recover from mistakes
 
 ### Git Flow Workflow
@@ -561,6 +562,31 @@ git checkout <branch> -- <filename>
 git cherry-pick <commit hash>
 ```
 
+**Cherry-pick multiple commits:**
+```bash
+git cherry-pick <commit1> <commit2> <commit3>
+```
+
+**Cherry-pick a range of commits:**
+```bash
+git cherry-pick <commit1>^..<commit2>
+```
+
+**Cherry-pick without committing:**
+```bash
+git cherry-pick -n <commit hash>
+```
+
+**Continue cherry-pick after resolving conflicts:**
+```bash
+git cherry-pick --continue
+```
+
+**Abort cherry-pick:**
+```bash
+git cherry-pick --abort
+```
+
 **Rename current branch:**
 ```bash
 git branch -m <new_branch_name>
@@ -769,6 +795,109 @@ pick <commit_id3>
 pick <commit_id>
 squash <commit_id2>
 squash <commit_id3>
+```
+
+---
+
+## 🍒 Cherry Pick
+
+Cherry-picking allows you to apply specific commits from one branch to another without merging the entire branch.
+
+### Basic Cherry Pick
+
+**Apply specific commit:**
+```bash
+git cherry-pick <commit-hash>
+```
+
+**Cherry-pick from another branch:**
+```bash
+git cherry-pick feature-branch~2
+```
+
+### Multiple Commits
+
+**Pick multiple specific commits:**
+```bash
+git cherry-pick <commit1> <commit2> <commit3>
+```
+
+**Pick range of commits:**
+```bash
+git cherry-pick <start-commit>^..<end-commit>
+```
+> ℹ️ **Note:** Use `^` to include the start commit in the range
+
+### Advanced Options
+
+**Cherry-pick without auto-commit:**
+```bash
+git cherry-pick -n <commit>
+# or
+git cherry-pick --no-commit <commit>
+```
+> Allows you to modify changes before committing
+
+**Cherry-pick and edit commit message:**
+```bash
+git cherry-pick -e <commit>
+# or
+git cherry-pick --edit <commit>
+```
+
+**Cherry-pick with different author:**
+```bash
+git cherry-pick <commit> --author="Name <email@example.com>"
+```
+
+**Cherry-pick and sign-off:**
+```bash
+git cherry-pick -s <commit>
+# or
+git cherry-pick --signoff <commit>
+```
+
+### Conflict Resolution
+
+**If conflicts occur during cherry-pick:**
+```bash
+# 1. Resolve conflicts in your editor
+# 2. Stage resolved files
+git add <resolved-files>
+
+# 3. Continue cherry-pick
+git cherry-pick --continue
+```
+
+**Abort cherry-pick:**
+```bash
+git cherry-pick --abort
+```
+
+**Skip current commit during cherry-pick:**
+```bash
+git cherry-pick --skip
+```
+
+### Practical Examples
+
+**Example 1: Apply bug fix from another branch**
+```bash
+# You're on main branch and need a fix from develop
+git cherry-pick abc123
+```
+
+**Example 2: Apply multiple commits**
+```bash
+# Apply commits from feature branch to release branch
+git checkout release-1.0
+git cherry-pick commit1 commit2 commit3
+```
+
+**Example 3: Cherry-pick range without merging**
+```bash
+# Apply last 5 commits from feature branch
+git cherry-pick feature-branch~5..feature-branch
 ```
 
 ---
